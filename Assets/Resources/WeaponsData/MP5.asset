@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b523a3109e670624d8ec942383bc1be0, type: 3}
+  m_Name: MP5
+  m_EditorClassIdentifier: 
+  type: 3
+  dmg: 4
+  maxAmmoInMag: 32
+  maxAmmoInBag: 160
+  maxRange: 20
+  automatic: 1
+  silenced: 0
+  fireCooldown: 0.1
+  reloadCooldown: 1.2
+  animType: {fileID: 22100000, guid: 3195532c4d3314b4eb852c9183bccd39, type: 2}
+  bodyAnimType: {fileID: 9100000, guid: 54ab26af7149c09459fbfa348edd200b, type: 2}
+  drawTime: 0.25
+  undrawTime: 0.25
+  fireSound: {fileID: 8300000, guid: 64af65c1e5e45c544b18ecbbcf3d83ca, type: 3}
+  reloadSound: {fileID: 8300000, guid: 9163828a2a1c79248a08dbe30b8c7642, type: 3}
