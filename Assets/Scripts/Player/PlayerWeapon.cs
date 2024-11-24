@@ -16,7 +16,6 @@ public class PlayerWeapon : NetworkBehaviour
     [SerializeField] private GameObject gunHitObjVFXPrefab;
     [SerializeField] private GameObject gunHitNPCVFXPrefab;
     [SerializeField] private GameObject gunHitGlassVFXPrefab;
-    [SerializeField] private AnimatorOverrideController noWeaponController;
     [SerializeField] private float soundRange;
     [SerializeField] private AudioSource sfxSource;
 
@@ -72,55 +71,22 @@ public class PlayerWeapon : NetworkBehaviour
         }
     }
 
-    /// <summary>
-    /// Picks up a weapon
-    /// </summary>
-    /// <param name="type">The weapon's type</param>
-    public void PickupWeapon(WeaponType type)
-    {
-        for (int i = 0; i < weapons.Length; i++)
-        {
-            if (weapons[i] == null)
-            {
-                AddWeaponToSlot(type, i, true);
-                return;
-            }
-        }
-
-        int currentSlot = currentWeaponIndex;
-        DropCurrentWeapon();
-        AddWeaponToSlot(type, currentSlot, true);
-    }
 
     /// <summary>
     /// Adds ammo to the current weapon
     /// </summary>
     /// <param name="magsToAdd">The number of mags to add</param>
-    public void AddAmmoToCurrentWeapon(int magsToAdd)
+    /// <returns>Was ammo added ?</returns>
+    public bool AddAmmoToCurrentWeapon(int magsToAdd)
     {
         if (currentWeapon != null)
         {
-            currentWeapon.AddMags(magsToAdd);
+            return currentWeapon.AddMags(magsToAdd);
         }
+
+        return false;
     }
 
-    /// <summary>
-    /// Drops the current weapon
-    /// </summary>
-    public void DropCurrentWeapon()
-    {
-        if (currentWeapon == null) return;
-
-        Transform cameraPos = Camera.main.transform;
-        SpawnWeaponCommand(currentWeapon.GetWeaponData().type.ToString(),
-            cameraPos.position + cameraPos.forward * 1f,
-            cameraPos.forward);
-
-        Destroy(currentWeapon.gameObject);
-        currentWeaponIndex = -1;
-        currentWeapon = null;
-        handsAnimator.runtimeAnimatorController = noWeaponController;
-    }
 
     /// <summary>
     /// Adds a weapon to the specified slot
@@ -242,10 +208,6 @@ public class PlayerWeapon : NetworkBehaviour
         {
             Fire();
         }
-        else if (Input.GetKeyDown(KeyCode.G))
-        {
-            DropCurrentWeapon();
-        }
 
         aiming = changeWeaponRoutine != null ? false : Input.GetMouseButton(1);
         handsAnimator.SetBool("Aim", aiming);
@@ -356,20 +318,6 @@ public class PlayerWeapon : NetworkBehaviour
 
     /*------------------------------------- Network ----------------------------------------------------------*/
 
-
-    /// <summary>
-    /// Rpc for spawning a droped weapon
-    /// </summary>
-    /// <param name="weaponName">The droped weapon's name</param>
-    /// <param name="position">The droped weapon's position</param>
-    /// <param name="impulse">The droped weapon's impulse</param>
-    [Command(requiresAuthority = false)]
-    void SpawnWeaponCommand(string weaponName, Vector3 position, Vector3 impulse)
-    {
-        WeaponDrop drop = Instantiate(Resources.Load<GameObject>("Drops/" + weaponName)).GetComponent<WeaponDrop>();
-        drop.Init(position, impulse);
-        NetworkServer.Spawn(drop.gameObject);
-    }
 
     /// <summary>
     /// Sets the networked weapon (Server)

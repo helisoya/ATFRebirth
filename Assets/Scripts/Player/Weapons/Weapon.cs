@@ -54,9 +54,13 @@ public class Weapon : MonoBehaviour
     /// Adds mags to the gun
     /// </summary>
     /// <param name="mags">The number of mags to add</param>
-    public void AddMags(int mags)
+    /// <returns>Was ammo added ?</returns>
+    public bool AddMags(int mags)
     {
+        if (ammoInBag >= data.maxAmmoInBag) return false;
+
         ammoInBag = Mathf.Clamp(ammoInBag + mags * data.maxAmmoInMag, 0, data.maxAmmoInBag);
+        return true;
     }
 
     /// <summary>
