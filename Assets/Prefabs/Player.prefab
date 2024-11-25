@@ -563,10 +563,11 @@ MonoBehaviour:
   gunHitObjVFXPrefab: {fileID: 0}
   gunHitNPCVFXPrefab: {fileID: 0}
   gunHitGlassVFXPrefab: {fileID: 0}
-  noWeaponController: {fileID: 22100000, guid: c12c998cd1707924094bc5d4c559b903, type: 2}
   soundRange: 15
   sfxSource: {fileID: 2162016856896261176}
   bodyAnimator: {fileID: 7505225202577167190}
+  tpsWeaponRoot: {fileID: 8817401421555523129}
+  tpsWeapon: {fileID: 0}
 --- !u!114 &2162016856896261178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -821,6 +822,37 @@ Transform:
   m_Children:
   - {fileID: 1840775555037590998}
   m_Father: {fileID: 2162016856896261157}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5837383943918403393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8817401421555523129}
+  m_Layer: 0
+  m_Name: WeaponRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8817401421555523129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5837383943918403393}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 555255753500945909}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2162016856072651541
 PrefabInstance:
@@ -1490,7 +1522,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1852576806548013000, guid: 8be7df9e7d8678c49877486ab9520b36,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8817401421555523129}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8be7df9e7d8678c49877486ab9520b36,
         type: 3}
@@ -1501,6 +1537,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7505225202577167190}
   m_SourcePrefab: {fileID: 100100000, guid: 8be7df9e7d8678c49877486ab9520b36, type: 3}
+--- !u!4 &555255753500945909 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 8be7df9e7d8678c49877486ab9520b36,
+    type: 3}
+  m_PrefabInstance: {fileID: 2162016856121119293}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1351202148071550828 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8be7df9e7d8678c49877486ab9520b36,

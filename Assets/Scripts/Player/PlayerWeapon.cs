@@ -21,6 +21,8 @@ public class PlayerWeapon : NetworkBehaviour
 
     [Header("Network")]
     [SerializeField] private NetworkedAnimator bodyAnimator;
+    [SerializeField] private Transform tpsWeaponRoot;
+    private TPSWeapon tpsWeapon;
 
     private Weapon[] weapons;
     private int currentWeaponIndex;
@@ -43,11 +45,12 @@ public class PlayerWeapon : NetworkBehaviour
 
     public override void OnStartClient()
     {
-        if (!isClient)
+        if (!isLocalPlayer)
         {
             WeaponData data = GameManager.instance.GetWeaponData(networkedCurrentWeaponType);
             sfxSource.clip = data != null ? data.fireSound : null;
             bodyAnimator.ChangeRuntimeAnimator(data.bodyAnimType);
+            tpsWeapon = Instantiate(Resources.Load<TPSWeapon>("Guns/TPS/" + networkedCurrentWeaponType.ToString()), tpsWeaponRoot);
         }
 
     }
@@ -59,9 +62,11 @@ public class PlayerWeapon : NetworkBehaviour
         weapons = new Weapon[2];
         bool selectedWeapon = false;
 
+        WeaponType[] types = { WeaponType.GLOCK, WeaponType.AK47 };
+
         for (int i = 0; i < 2; i++)
         {
-            WeaponType weapon = WeaponType.GLOCK; //GameManager.instance.weapons[i];
+            WeaponType weapon = types[i]; //GameManager.instance.weapons[i];
             if (weapon != WeaponType.NONE)
             {
                 AddWeaponToSlot(weapon, i, !selectedWeapon);
@@ -103,7 +108,7 @@ public class PlayerWeapon : NetworkBehaviour
     {
         if (slot < 0 || slot >= weapons.Length) return;
 
-        Weapon newWeapon = Instantiate(Resources.Load<GameObject>("Guns/" + type.ToString()), gunRoot).GetComponent<Weapon>();
+        Weapon newWeapon = Instantiate(Resources.Load<GameObject>("Guns/FPS/" + type.ToString()), gunRoot).GetComponent<Weapon>();
         newWeapon.gameObject.SetActive(false);
 
         if (weapons[slot] != null)
@@ -339,8 +344,17 @@ public class PlayerWeapon : NetworkBehaviour
         networkedCurrentWeaponType = type;
         if (!isLocalPlayer)
         {
-            sfxSource.clip = GameManager.instance.GetWeaponData(type).fireSound;
-            bodyAnimator.ChangeRuntimeAnimator(GameManager.instance.GetWeaponData(type).bodyAnimType);
+            WeaponData data = GameManager.instance.GetWeaponData(type);
+
+            sfxSource.clip = data.fireSound;
+            bodyAnimator.ChangeRuntimeAnimator(data.bodyAnimType);
+
+            if (!isLocalPlayer)
+            {
+                if (tpsWeapon) Destroy(tpsWeapon.gameObject);
+                tpsWeapon = Instantiate(Resources.Load<TPSWeapon>("Guns/TPS/" + type.ToString()), tpsWeaponRoot);
+            }
+
         }
         ChangeWeaponRpc(type);
     }
@@ -349,11 +363,15 @@ public class PlayerWeapon : NetworkBehaviour
     /// Sets the networked weapon (Clients)
     /// </summary>
     /// <param name="type">The weapon's type</param>
-    [Command(requiresAuthority = false)]
+    [ClientRpc(includeOwner = false)]
     void ChangeWeaponRpc(WeaponType type)
     {
-        sfxSource.clip = GameManager.instance.GetWeaponData(type).fireSound;
-        bodyAnimator.ChangeRuntimeAnimator(GameManager.instance.GetWeaponData(type).bodyAnimType);
+        WeaponData data = GameManager.instance.GetWeaponData(type);
+
+        sfxSource.clip = data.fireSound;
+        bodyAnimator.ChangeRuntimeAnimator(data.bodyAnimType);
+        if (tpsWeapon) Destroy(tpsWeapon.gameObject);
+        tpsWeapon = Instantiate(Resources.Load<TPSWeapon>("Guns/TPS/" + type.ToString()), tpsWeaponRoot);
     }
 
 
@@ -367,6 +385,7 @@ public class PlayerWeapon : NetworkBehaviour
         {
             sfxSource.Stop();
             sfxSource.Play();
+            if (tpsWeapon && !isLocalPlayer) tpsWeapon.ActivateMuzzleFlare();
         }
 
         PlayFireSfxRpc();
@@ -380,6 +399,8 @@ public class PlayerWeapon : NetworkBehaviour
     {
         sfxSource.Stop();
         sfxSource.Play();
+
+        if (tpsWeapon) tpsWeapon.ActivateMuzzleFlare();
     }
 
     /// <summary>
