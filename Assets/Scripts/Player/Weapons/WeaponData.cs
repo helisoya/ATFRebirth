@@ -11,6 +11,7 @@ public class WeaponData : ScriptableObject
 {
     [Header("Stats")]
     public WeaponType type;
+    public string weaponName;
     public int dmg;
     public int maxAmmoInMag;
     public int maxAmmoInBag;

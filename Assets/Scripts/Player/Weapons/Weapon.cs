@@ -9,8 +9,8 @@ public class Weapon : MonoBehaviour
 {
     [Header("General")]
     [SerializeField] private WeaponData data;
-    private int ammoInBag;
-    private int ammoInMag;
+    public int ammoInBag { get; private set; }
+    public int ammoInMag { get; private set; }
 
 
 
@@ -43,13 +43,6 @@ public class Weapon : MonoBehaviour
         return data;
     }
 
-
-    void Start()
-    {
-        ammoInMag = data.maxAmmoInMag;
-        ammoInBag = data.maxAmmoInBag;
-    }
-
     /// <summary>
     /// Adds mags to the gun
     /// </summary>
@@ -64,12 +57,12 @@ public class Weapon : MonoBehaviour
     }
 
     /// <summary>
-    /// Refill the gun
+    /// Refill the gun for
     /// </summary>
-    public void RefillAmmoToMax()
+    public void SetupAmmo()
     {
-        ammoInBag = data.maxAmmoInBag;
         ammoInMag = data.maxAmmoInMag;
+        AddMags(4);
     }
 
     /// <summary>

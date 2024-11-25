@@ -65,7 +65,10 @@ public class PlayerWeapon : NetworkBehaviour
             if (weapon != WeaponType.NONE)
             {
                 AddWeaponToSlot(weapon, i, !selectedWeapon);
-                weapons[i].RefillAmmoToMax();
+                GameGUI.instance.SetGUIWeaponName(i, weapons[i].GetWeaponData().weaponName);
+
+                weapons[i].SetupAmmo();
+                GameGUI.instance.SetGUIWeaponAmmo(i, weapons[i].ammoInMag, weapons[i].ammoInBag);
                 selectedWeapon = true;
             }
         }
@@ -81,7 +84,9 @@ public class PlayerWeapon : NetworkBehaviour
     {
         if (currentWeapon != null)
         {
-            return currentWeapon.AddMags(magsToAdd);
+            bool value = currentWeapon.AddMags(magsToAdd);
+            GameGUI.instance.SetGUIWeaponAmmo(currentWeaponIndex, currentWeapon.ammoInMag, currentWeapon.ammoInBag);
+            return value;
         }
 
         return false;
@@ -136,6 +141,7 @@ public class PlayerWeapon : NetworkBehaviour
     {
         int oldSlot = currentWeaponIndex;
         currentWeaponIndex = slot;
+        GameGUI.instance.SetCurrentGUIWeapon(currentWeaponIndex);
 
         currentWeapon = weapons[currentWeaponIndex];
 
@@ -224,6 +230,8 @@ public class PlayerWeapon : NetworkBehaviour
         sfxSource.PlayOneShot(currentWeapon.GetWeaponData().reloadSound);
         PlayReloadSfxCommand(currentWeapon.GetWeaponData().type);
         bodyAnimator.SetTrigger("Reload");
+
+        GameGUI.instance.SetGUIWeaponAmmo(currentWeaponIndex, currentWeapon.ammoInMag, currentWeapon.ammoInBag);
     }
 
     /// <summary>
@@ -242,6 +250,8 @@ public class PlayerWeapon : NetworkBehaviour
 
         handsAnimator.SetTrigger("Fire");
         SetActionCooldown(data.fireCooldown);
+
+        GameGUI.instance.SetGUIWeaponAmmo(currentWeaponIndex, currentWeapon.ammoInMag, currentWeapon.ammoInBag);
         //SearchForTarget(data.maxRange, data.dmg, false);
 
         if (!data.silenced)
