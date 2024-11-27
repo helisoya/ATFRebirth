@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GLOCK
   m_EditorClassIdentifier: 
   type: 1
+  weaponName: 
   dmg: 4
   maxAmmoInMag: 8
   maxAmmoInBag: 160
@@ -22,7 +23,7 @@ MonoBehaviour:
   fireCooldown: 0.1
   reloadCooldown: 1.2
   animType: {fileID: 9100000, guid: cabbc15ec4e524b42af9731b6419881e, type: 2}
-  bodyAnimType: {fileID: 9100000, guid: 54ab26af7149c09459fbfa348edd200b, type: 2}
+  bodyAnimType: {fileID: 22100000, guid: 4115409b9c428144fb4da5b11c7c9dcc, type: 2}
   drawTime: 0.25
   undrawTime: 0.25
   fireSound: {fileID: 8300000, guid: 74efe9cdd5a93b14c8ce8a650d938cbf, type: 3}

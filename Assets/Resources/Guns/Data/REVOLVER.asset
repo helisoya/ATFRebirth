@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: REVOLVER
   m_EditorClassIdentifier: 
   type: 2
+  weaponName: 
   dmg: 8
   maxAmmoInMag: 6
   maxAmmoInBag: 48
@@ -22,7 +23,7 @@ MonoBehaviour:
   fireCooldown: 0.2
   reloadCooldown: 1.2
   animType: {fileID: 22100000, guid: 50c6167f17e990a4e8890ad72dd1fb61, type: 2}
-  bodyAnimType: {fileID: 9100000, guid: 54ab26af7149c09459fbfa348edd200b, type: 2}
+  bodyAnimType: {fileID: 22100000, guid: 4115409b9c428144fb4da5b11c7c9dcc, type: 2}
   drawTime: 0.25
   undrawTime: 0.25
   fireSound: {fileID: 8300000, guid: 1725fc6725bb5f545b3e84e28607f07b, type: 3}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6762494778703580123}
   - component: {fileID: 2220903495299233701}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: AK47
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6762494778948155256}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 6762083085712647354}
   - component: {fileID: 6852352092797108990}
   - component: {fileID: 6853638993393295954}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: FlashHeadon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4992,7 +4992,7 @@ GameObject:
   - component: {fileID: 6761717664086340374}
   - component: {fileID: 6852631705604653656}
   - component: {fileID: 6853709693245350090}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: MuzzleFlash01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9976,12 +9976,12 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5f21bd993c0dcc749b929fce745b37f2,
         type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: 5f21bd993c0dcc749b929fce745b37f2,
         type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -251,8 +251,6 @@ public class PlayerWeapon : NetworkBehaviour
         sfxSource.Play();
         PlayFireSfxCommand();
 
-        bodyAnimator.SetTrigger("Fire");
-
         handsAnimator.SetTrigger("Fire");
         SetActionCooldown(data.fireCooldown);
 
