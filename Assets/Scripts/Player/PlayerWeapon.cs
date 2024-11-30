@@ -48,6 +48,8 @@ public class PlayerWeapon : NetworkBehaviour
         if (!isLocalPlayer)
         {
             WeaponData data = GameManager.instance.GetWeaponData(networkedCurrentWeaponType);
+            if (data == null) return;
+
             sfxSource.clip = data != null ? data.fireSound : null;
             bodyAnimator.ChangeRuntimeAnimator(data.bodyAnimType);
             tpsWeapon = Instantiate(Resources.Load<TPSWeapon>("Guns/TPS/" + networkedCurrentWeaponType.ToString()), tpsWeaponRoot);
@@ -194,7 +196,7 @@ public class PlayerWeapon : NetworkBehaviour
     void Update()
     {
 
-        if (InCooldown) return;
+        if (InCooldown || !PlayerNetwork.localPlayer.health.Alive) return;
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {

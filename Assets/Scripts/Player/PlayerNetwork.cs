@@ -16,9 +16,11 @@ public class PlayerNetwork : NetworkBehaviour
     [Header("Components")]
     [SerializeField] private PlayerWeapon _weapon;
     [SerializeField] private PlayerInterraction _interraction;
+    [SerializeField] private PlayerHealth _health;
 
     public PlayerWeapon weapon { get { return _weapon; } }
     public PlayerInterraction interraction { get { return _interraction; } }
+    public PlayerHealth health { get { return _health; } }
     public static PlayerNetwork localPlayer;
 
     public override void OnStartClient()

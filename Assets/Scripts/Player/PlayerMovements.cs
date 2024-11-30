@@ -65,6 +65,8 @@ public class PlayerMovements : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!PlayerNetwork.localPlayer.health.Alive) return;
+
         grounded = Physics.SphereCast(groundChecker.position, jumpRaycastSize, -Vector3.up, out _, jumpRaycastLength);
         running = Input.GetKey(KeyCode.LeftShift);
 

@@ -44,7 +44,7 @@ public class PlayerInterraction : NetworkBehaviour
 
     void Update()
     {
-        if (GameGUI.instance.inMenu) return;
+        if (GameGUI.instance.inMenu || !PlayerNetwork.localPlayer.health.Alive) return;
 
         RaycastHit hit;
         if (Physics.Raycast(new Ray(cam.position, cam.forward), out hit,
