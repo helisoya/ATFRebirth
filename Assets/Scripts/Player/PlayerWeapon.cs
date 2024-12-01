@@ -13,11 +13,14 @@ public class PlayerWeapon : NetworkBehaviour
     [Header("Components")]
     [SerializeField] private Animator handsAnimator;
     [SerializeField] private Transform gunRoot;
-    [SerializeField] private GameObject gunHitObjVFXPrefab;
-    [SerializeField] private GameObject gunHitNPCVFXPrefab;
-    [SerializeField] private GameObject gunHitGlassVFXPrefab;
     [SerializeField] private float soundRange;
     [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private Camera playerCam;
+
+    [Header("VFX")]
+
+    [SerializeField] private GameObject gunHitObjVFXPrefab;
+    [SerializeField] private GameObject gunHitNPCVFXPrefab;
 
     [Header("Network")]
     [SerializeField] private NetworkedAnimator bodyAnimator;
@@ -257,7 +260,7 @@ public class PlayerWeapon : NetworkBehaviour
         SetActionCooldown(data.fireCooldown);
 
         GameGUI.instance.SetGUIWeaponAmmo(currentWeaponIndex, currentWeapon.ammoInMag, currentWeapon.ammoInBag);
-        //SearchForTarget(data.maxRange, data.dmg, false);
+        SearchForTarget(data.maxRange, data.dmg, playerCam.transform.forward);
 
         if (!data.silenced)
         {
@@ -274,55 +277,6 @@ public class PlayerWeapon : NetworkBehaviour
 
     }
 
-    void SearchForTarget(float range, int dmg)
-    {
-        StartCoroutine(Routine_SearchForTarget(range, dmg));
-
-    }
-
-
-    IEnumerator Routine_SearchForTarget(float range, int dmg)
-    {
-        bool ok = true;
-        RaycastHit hit;
-        Transform camTrans = Camera.main.transform;
-
-        while (ok)
-        {
-            ok = false;
-            if (Physics.Raycast(camTrans.position, camTrans.forward, out hit, range))
-            {
-                GameObject prefabChosen = gunHitObjVFXPrefab;
-
-                hit.transform.SendMessage("OnTakeHit", dmg, SendMessageOptions.DontRequireReceiver);
-
-                /*
-                if (hit.transform.GetComponent<NPCHitPoint>() != null)
-                {
-                    prefabChosen = gunHitNPCVFXPrefab;
-                }
-                else if (hit.transform.GetComponent<BreakableGlass>() != null)
-                {
-                    canShowEffectWithMelee = true;
-                    prefabChosen = gunHitGlassVFXPrefab;
-                    ok = true;
-                }
-                */
-
-
-                if (prefabChosen != null)
-                {
-                    GameObject obj = Instantiate(prefabChosen, hit.point + hit.normal * 0.001f, Quaternion.identity);
-                    obj.transform.LookAt(hit.point + hit.normal);
-                    Destroy(obj, 3);
-                }
-
-            }
-            yield return new WaitForEndOfFrame();
-        }
-
-
-    }
 
 
 
@@ -335,6 +289,40 @@ public class PlayerWeapon : NetworkBehaviour
 
 
     /// <summary>
+    /// Searches for a target in front of the player
+    /// </summary>
+    /// <param name="range"></param>
+    /// <param name="dmg"></param>
+    [Command]
+    void SearchForTarget(float range, int dmg, Vector3 forward)
+    {
+        RaycastHit hit;
+        Transform camTrans = playerCam.transform;
+
+        if (Physics.Raycast(camTrans.position, forward, out hit, range))
+        {
+            hit.transform.SendMessage("OnTakeHit", dmg, SendMessageOptions.DontRequireReceiver);
+
+            /*
+            GameObject prefabChosen = gunHitObjVFXPrefab;
+
+            if (hit.transform.GetComponent<NPCHitPoint>() != null)
+            {
+                prefabChosen = gunHitNPCVFXPrefab;
+            }
+
+            if (prefabChosen != null)
+            {
+                GameObject obj = Instantiate(prefabChosen, hit.point + hit.normal * 0.001f, Quaternion.identity);
+                obj.transform.LookAt(hit.point + hit.normal);
+                Destroy(obj, 3);
+            }
+            */
+        }
+    }
+
+
+    /// <summary>
     /// Sets the networked weapon (Server)
     /// </summary>
     /// <param name="type">The weapon's type</param>
@@ -342,20 +330,6 @@ public class PlayerWeapon : NetworkBehaviour
     void ChangeWeaponCommand(WeaponType type)
     {
         networkedCurrentWeaponType = type;
-        if (!isLocalPlayer)
-        {
-            WeaponData data = GameManager.instance.GetWeaponData(type);
-
-            sfxSource.clip = data.fireSound;
-            bodyAnimator.ChangeRuntimeAnimator(data.bodyAnimType);
-
-            if (!isLocalPlayer)
-            {
-                if (tpsWeapon) Destroy(tpsWeapon.gameObject);
-                tpsWeapon = Instantiate(Resources.Load<TPSWeapon>("Guns/TPS/" + type.ToString()), tpsWeaponRoot);
-            }
-
-        }
         ChangeWeaponRpc(type);
     }
 
@@ -381,13 +355,6 @@ public class PlayerWeapon : NetworkBehaviour
     [Command(requiresAuthority = false)]
     void PlayFireSfxCommand()
     {
-        if (!isLocalPlayer)
-        {
-            sfxSource.Stop();
-            sfxSource.Play();
-            if (tpsWeapon && !isLocalPlayer) tpsWeapon.ActivateMuzzleFlare();
-        }
-
         PlayFireSfxRpc();
     }
 
@@ -410,7 +377,6 @@ public class PlayerWeapon : NetworkBehaviour
     [Command(requiresAuthority = false)]
     void PlayReloadSfxCommand(WeaponType type)
     {
-        if (!isLocalPlayer) sfxSource.PlayOneShot(GameManager.instance.GetWeaponData(type).reloadSound);
         PlayReloadSfxRpc(type);
     }
 

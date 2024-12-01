@@ -671,11 +671,11 @@ MonoBehaviour:
   syncInterval: 0
   handsAnimator: {fileID: 2162016855515138552}
   gunRoot: {fileID: 2162016857253109430}
-  gunHitObjVFXPrefab: {fileID: 0}
-  gunHitNPCVFXPrefab: {fileID: 0}
-  gunHitGlassVFXPrefab: {fileID: 0}
   soundRange: 15
   sfxSource: {fileID: 2162016856896261176}
+  playerCam: {fileID: 2162016855779241313}
+  gunHitObjVFXPrefab: {fileID: 0}
+  gunHitNPCVFXPrefab: {fileID: 0}
   bodyAnimator: {fileID: 7505225202577167190}
   tpsWeaponRoot: {fileID: 8817401421555523129}
 --- !u!114 &2162016856896261178
@@ -1917,9 +1917,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a885c3abd0a941c45b1e25faf3da945a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 8798737209170966712}
+  animators:
+  - {fileID: 8798737209170966712}
+  - {fileID: 7355359731881081323}
   playerRb: {fileID: 2162016856896261158}
-  playerCollider: {fileID: 2162016855564207032}
+  playerColliders:
+  - {fileID: 2162016855564207032}
   rbs:
   - {fileID: 2179021543737338177}
   - {fileID: 6701031727820622629}

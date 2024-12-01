@@ -45,7 +45,6 @@ public class NetworkedAnimator : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void SetTrigger(string name)
     {
-        animator.SetTrigger(name);
         SetTriggerRpc(name);
     }
 
@@ -70,7 +69,6 @@ public class NetworkedAnimator : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void SetFloatCommand(string name, float value)
     {
-        animator.SetFloat(name, value);
         SetFloatRpc(name, value);
     }
 
@@ -96,7 +94,6 @@ public class NetworkedAnimator : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void SetBoolCommand(string name, bool value)
     {
-        animator.SetBool(name, value);
         SetBoolRpc(name, value);
     }
 

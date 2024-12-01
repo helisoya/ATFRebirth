@@ -5,13 +5,16 @@ using UnityEngine;
 /// </summary>
 public class RagdollManager : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    [Header("Non-Rigidbody")]
+    [SerializeField] private Animator[] animators;
     [SerializeField] private Rigidbody playerRb;
-    [SerializeField] private Collider playerCollider;
+    [SerializeField] private Collider[] playerColliders;
+
+    [Header("Rigidbody")]
     [SerializeField] private Rigidbody[] rbs;
     [SerializeField] private Collider[] cols;
 
-    void Start()
+    void Awake()
     {
         StopRagdoll();
     }
@@ -21,12 +24,11 @@ public class RagdollManager : MonoBehaviour
     /// </summary>
     public void ActivateRagdoll()
     {
-        print("Activating Ragdoll");
-        animator.enabled = false;
-        playerRb.isKinematic = true;
-        playerCollider.enabled = true;
+        if (playerRb) playerRb.isKinematic = true;
+        if (playerColliders.Length > 0) EnableColliders(playerColliders, false);
+        EnableAnimators(false);
         EnableRigibodies(true);
-        EnableColliders(true);
+        EnableColliders(cols, true);
         Invoke("StopRagdoll", 5);
     }
 
@@ -36,18 +38,30 @@ public class RagdollManager : MonoBehaviour
     public void StopRagdoll()
     {
         EnableRigibodies(false);
-        EnableColliders(false);
+        EnableColliders(cols, false);
     }
 
     /// <summary>
     /// Enables the ragdoll's colliders
     /// </summary>
     /// <param name="value">Are the collider enabled ?</param>
-    void EnableColliders(bool value)
+    void EnableColliders(Collider[] cols, bool value)
     {
         foreach (Collider col in cols)
         {
             col.enabled = value;
+        }
+    }
+
+    /// <summary>
+    /// Enables the ragdoll's colliders
+    /// </summary>
+    /// <param name="value">Are the collider enabled ?</param>
+    void EnableAnimators(bool value)
+    {
+        foreach (Animator animator in animators)
+        {
+            animator.enabled = value;
         }
     }
 
