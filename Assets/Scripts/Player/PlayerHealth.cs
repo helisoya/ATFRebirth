@@ -31,12 +31,24 @@ public class PlayerHealth : NetworkBehaviour
         if (!Alive) return;
 
         health = Mathf.Clamp(health + amount, 0, maxHealth);
+        GameGUI.instance.SetHealthFillAmount(health / ((float)maxHealth));
 
         if (health == 0)
         {
             Alive = false;
             CmdActivateRagdoll();
         }
+    }
+
+
+    /// <summary>
+    /// Inflict damage on the player
+    /// </summary>
+    /// <param name="amount">The amount of damage</param>
+    [ClientRpc(includeOwner = true)]
+    public void TakeDamage(int amount)
+    {
+        if (isLocalPlayer) AddHealth(-amount);
     }
 
 

@@ -8,6 +8,7 @@ using UnityEngine;
 public class NetworkedAnimator : NetworkBehaviour
 {
     [SerializeField] private Animator animator;
+    [SerializeField] private bool isServerBased = false;
     private Dictionary<string, float> fValues = new Dictionary<string, float>();
     private Dictionary<string, bool> bValues = new Dictionary<string, bool>();
 
@@ -40,10 +41,14 @@ public class NetworkedAnimator : NetworkBehaviour
         return defaultValue;
     }
 
-
+    public void SetTrigger(string name)
+    {
+        if (isServerBased) SetTriggerRpc(name);
+        else SetTriggerCommand(name);
+    }
 
     [Command(requiresAuthority = false)]
-    public void SetTrigger(string name)
+    void SetTriggerCommand(string name)
     {
         SetTriggerRpc(name);
     }
@@ -62,12 +67,13 @@ public class NetworkedAnimator : NetworkBehaviour
         {
             fValues[name] = value;
             animator.SetFloat(name, value);
-            SetFloatCommand(name, value);
+            if (isServerBased) SetFloatRpc(name, value);
+            else SetFloatCommand(name, value);
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void SetFloatCommand(string name, float value)
+    void SetFloatCommand(string name, float value)
     {
         SetFloatRpc(name, value);
     }
@@ -86,13 +92,14 @@ public class NetworkedAnimator : NetworkBehaviour
         {
             bValues[name] = value;
             animator.SetBool(name, value);
-            SetBoolCommand(name, value);
+            if (isServerBased) SetBoolRpc(name, value);
+            else SetBoolCommand(name, value);
         }
     }
 
 
     [Command(requiresAuthority = false)]
-    public void SetBoolCommand(string name, bool value)
+    void SetBoolCommand(string name, bool value)
     {
         SetBoolRpc(name, value);
     }

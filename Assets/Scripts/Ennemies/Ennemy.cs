@@ -11,6 +11,8 @@ public class Ennemy : NetworkBehaviour
 
     [Header("Components")]
     [SerializeField] private RagdollManager ragdollManager;
+    [SerializeField] private EnnemyLogic logic;
+    [SerializeField] private GameObject prefabAmmoBox;
 
     private int health;
 
@@ -32,7 +34,13 @@ public class Ennemy : NetworkBehaviour
         if (health == 0)
         {
             // Die
+            logic.Activated = false;
             RpcActivateRagdoll();
+
+            if (prefabAmmoBox)
+            {
+                NetworkServer.Spawn(Instantiate(prefabAmmoBox, transform.position, Quaternion.identity));
+            }
         }
     }
 
@@ -44,4 +52,6 @@ public class Ennemy : NetworkBehaviour
     {
         ragdollManager.ActivateRagdoll();
     }
+
+
 }

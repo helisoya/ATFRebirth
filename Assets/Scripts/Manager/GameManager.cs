@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -9,10 +10,12 @@ public class GameManager : MonoBehaviour
 
     [Header("Data")]
     [SerializeField] private WeaponDataContainer[] weapons;
+    public List<PlayerNetwork> players { get; private set; }
 
     void Awake()
     {
         instance = this;
+        players = new List<PlayerNetwork>();
     }
 
     public WeaponData GetWeaponData(WeaponType type)

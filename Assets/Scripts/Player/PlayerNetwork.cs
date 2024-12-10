@@ -42,8 +42,13 @@ public class PlayerNetwork : NetworkBehaviour
         if (isLocalPlayer)
         {
             localPlayer = this;
+
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
+        GameManager.instance.players.Add(this);
         gameObject.name = "Player(" + GetComponent<NetworkIdentity>().netId + ")";
     }
 }

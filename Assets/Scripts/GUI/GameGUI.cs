@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Mirror;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Represents the game's GUI
@@ -13,8 +14,11 @@ public class GameGUI : MonoBehaviour
 
     public bool inMenu { get { return menuRoot.activeInHierarchy; } }
 
-    [Header("Interractions")]
+    [Header("Interaction")]
     [SerializeField] private TextMeshProUGUI interactionText;
+
+    [Header("Health")]
+    [SerializeField] private Image healthFill;
 
     [Header("Weapons")]
     [SerializeField] private GUIWeapon[] weapons;
@@ -26,10 +30,9 @@ public class GameGUI : MonoBehaviour
     void Awake()
     {
         instance = this;
-        //Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
 
         SetInteractionText("");
+        SetHealthFillAmount(1f);
     }
 
     /// <summary>
@@ -41,7 +44,14 @@ public class GameGUI : MonoBehaviour
         interactionText.text = text;
     }
 
-
+    /// <summary>
+    /// Sets the health bar's fill amount
+    /// </summary>
+    /// <param name="fillAmount"></param>
+    public void SetHealthFillAmount(float fillAmount)
+    {
+        healthFill.fillAmount = fillAmount;
+    }
 
     /// <summary>
     /// Sets a weapon's name
@@ -87,7 +97,6 @@ public class GameGUI : MonoBehaviour
     /// </summary>
     public void OpenPauseMenu()
     {
-        Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
@@ -97,7 +106,6 @@ public class GameGUI : MonoBehaviour
     /// </summary>
     public void ClosePauseMenu()
     {
-        Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -106,6 +114,13 @@ public class GameGUI : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (inMenu) ClosePauseMenu();
+            else OpenPauseMenu();
+        }
+
+
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             FindFirstObjectByType<NetworkManager>().StartHost();
