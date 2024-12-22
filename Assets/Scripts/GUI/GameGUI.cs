@@ -23,9 +23,14 @@ public class GameGUI : MonoBehaviour
     [Header("Weapons")]
     [SerializeField] private GUIWeapon[] weapons;
 
+    [Header("General")]
+    [SerializeField] private GameObject gameplayRoot;
 
     [Header("Pause")]
     [SerializeField] private GameObject menuRoot;
+
+    [Header("End")]
+    [SerializeField] private GameObject endRoot;
 
     void Awake()
     {
@@ -93,31 +98,34 @@ public class GameGUI : MonoBehaviour
 
 
     /// <summary>
-    /// Opens the pause menu
+    /// Sets if the pause menu is open or not
     /// </summary>
-    public void OpenPauseMenu()
+    /// <param name="isOpen">Is the pause menu open ?</param>
+    public void SetPauseOpen(bool isOpen)
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        Cursor.lockState = isOpen ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = isOpen;
+        menuRoot.SetActive(isOpen);
+        gameplayRoot.SetActive(!isOpen);
     }
 
     /// <summary>
-    /// Closes the pause menu
+    /// Opens the end screen
     /// </summary>
-    public void ClosePauseMenu()
+    public void OpenEndMenu()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        endRoot.SetActive(true);
+        menuRoot.SetActive(false);
+        gameplayRoot.SetActive(false);
     }
 
 
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) && !endRoot.activeInHierarchy)
         {
-            if (inMenu) ClosePauseMenu();
-            else OpenPauseMenu();
+            SetPauseOpen(!inMenu);
         }
 
 

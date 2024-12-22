@@ -18,7 +18,11 @@ public class Ennemy : NetworkBehaviour
 
     void Start()
     {
-        health = maxHealth;
+        if (isServer)
+        {
+            health = maxHealth;
+            EnnemyManager.instance.RegisterEnnemy(this);
+        }
     }
 
     /// <summary>
@@ -36,6 +40,7 @@ public class Ennemy : NetworkBehaviour
             // Die
             logic.Activated = false;
             RpcActivateRagdoll();
+            EnnemyManager.instance.UnRegisterEnnemy(this);
 
             if (prefabAmmoBox)
             {
