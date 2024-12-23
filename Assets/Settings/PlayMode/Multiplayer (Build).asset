@@ -10,30 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a689d91966dfb46499fb63f130d9b905, type: 3}
-  m_Name: Multiplayer
+  m_Name: Multiplayer (Build)
   m_EditorClassIdentifier: 
-  m_Description: Two players
+  m_Description: Two players (Player 2 is build)
   m_EnableEditors: 1
   m_MainEditorInstance:
     Name: Main Editor
-    <CorrespondingNodeId>k__BackingField: Main Editor|0_run
-    m_Nodes:
-    - Main Editor|0_run
-    - Main Editor|0_deploy
+    <CorrespondingNodeId>k__BackingField: 
+    m_Nodes: []
     m_PlayerTag: 
     m_InitialScene: {fileID: 102900000, guid: 3d48a5e30cf78cf4ca1c5b21f11b6f2b, type: 3}
-  m_EditorInstances:
-  - Name: Player 2
-    <CorrespondingNodeId>k__BackingField: Player 2|1_run
-    m_Nodes:
-    - Player 2|1_run
-    - Player 2|1_deploy
-    m_PlayerTag: 
-    m_InitialScene: {fileID: 0}
-    m_AdvancedConfiguration:
-      StreamLogsToMainEditor: 0
-      LogsColor: {r: 0.3643, g: 0.581, b: 0.8679, a: 1}
-  m_LocalInstances: []
+  m_EditorInstances: []
+  m_LocalInstances:
+  - Name: Instance
+    <CorrespondingNodeId>k__BackingField: 
+    m_Nodes: []
+    m_BuildProfile: {fileID: 11400000, guid: 09e2ea9ed617cca4386c3a6d1b295fdb, type: 2}
+    advancedConfiguration:
+      m_StreamLogsToMainEditor: 1
+      m_LogsColor: {r: 0.3643, g: 0.581, b: 0.8679, a: 1}
+      m_Arguments: -screen-fullscreen 0 -screen-width 1024 -screen-height 720
   m_RemoteInstances: []
   m_OverridePort: 0
   m_Port: 0
