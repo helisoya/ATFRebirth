@@ -67,11 +67,9 @@ public class PlayerWeapon : NetworkBehaviour
         weapons = new Weapon[2];
         bool selectedWeapon = false;
 
-        WeaponType[] types = { WeaponType.GLOCK, WeaponType.AK47 };
-
         for (int i = 0; i < 2; i++)
         {
-            WeaponType weapon = types[i]; //GameManager.instance.weapons[i];
+            WeaponType weapon = LocalPlayerData.GetWeapon(i);
             if (weapon != WeaponType.NONE)
             {
                 AddWeaponToSlot(weapon, i, !selectedWeapon);

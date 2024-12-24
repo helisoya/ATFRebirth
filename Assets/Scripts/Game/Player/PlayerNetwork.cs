@@ -52,11 +52,11 @@ public class PlayerNetwork : NetworkBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            InitDataCmd(GetComponent<NetworkIdentity>().netId.ToString());
+            InitDataCmd(LocalPlayerData.Username);
         }
 
         GameManager.instance.players.Add(this);
-        gameObject.name = "Player(" + GetComponent<NetworkIdentity>().netId + ")";
+        gameObject.name = "Player(" + GetComponent<NetworkIdentity>().netId + "-" + LocalPlayerData.Username + ")";
     }
 
     /// <summary>

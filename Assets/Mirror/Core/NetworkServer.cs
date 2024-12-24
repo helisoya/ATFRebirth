@@ -70,9 +70,16 @@ namespace Mirror
         public static readonly Dictionary<uint, NetworkIdentity> spawned =
             new Dictionary<uint, NetworkIdentity>();
 
-        /// <summary>Single player mode can use dontListen to not accept incoming connections</summary>
-        // see also: https://github.com/vis2k/Mirror/pull/2595
-        public static bool dontListen;
+        /// <summary>Single player mode can set listen=false to not accept incoming connections.</summary>
+        public static bool listen;
+
+        // DEPRECATED 2024-10-14
+        [Obsolete("NetworkServer.dontListen was replaced with NetworkServer.listen. The new value is the opposite, and avoids double negatives like 'dontListen=false'")]
+        public static bool dontListen
+        {
+            get => !listen;
+            set => listen = !value;
+        }
 
         /// <summary>active checks if the server has been started either has standalone or as host server.</summary>
         public static bool active { get; internal set; }
@@ -137,7 +144,7 @@ namespace Mirror
             maxConnections = maxConns;
 
             // only start server if we want to listen
-            if (!dontListen)
+            if (listen)
             {
                 Transport.active.ServerStart();
 
@@ -241,7 +248,7 @@ namespace Mirror
             }
 
             // Reset all statics here....
-            dontListen = false;
+            listen = true;
             isLoadingScene = false;
             lastSendTime = 0;
             actualTickRate = 0;
@@ -343,7 +350,13 @@ namespace Mirror
                                 return;
                             }
 
-                    Debug.LogWarning("Command received while client is not ready.\nThis may be ignored if client intentionally set NotReady.");
+                    if (RemoteProcedureCalls.GetFunctionMethodName(msg.functionHash, out string method))
+                    {
+                        Debug.LogWarning($"Command {method} received from {conn} when client was not ready.\nThis may be ignored if client intentionally set NotReady.");
+                        return;
+                    }
+
+                    Debug.LogWarning($"Command received from {conn} while client is not ready.\nThis may be ignored if client intentionally set NotReady.");
                 }
                 return;
             }
@@ -658,7 +671,7 @@ namespace Mirror
 
         static void OnTransportConnectedWithAddress(int connectionId, string clientAddress)
         {
-            if (IsConnectionAllowed(connectionId))
+            if (IsConnectionAllowed(connectionId, clientAddress))
             {
                 // create a connection
                 NetworkConnectionToClient conn = new NetworkConnectionToClient(connectionId, clientAddress);
@@ -671,21 +684,28 @@ namespace Mirror
             }
         }
 
-        static bool IsConnectionAllowed(int connectionId)
+        static bool IsConnectionAllowed(int connectionId, string address)
         {
+            // only accept connections while listening
+            if (!listen)
+            {
+                Debug.Log($"Server not listening, rejecting connectionId={connectionId} with address={address}");
+                return false;
+            }
+
             // connectionId needs to be != 0 because 0 is reserved for local player
             // note that some transports like kcp generate connectionId by
             // hashing which can be < 0 as well, so we need to allow < 0!
             if (connectionId == 0)
             {
-                Debug.LogError($"Server.HandleConnect: invalid connectionId: {connectionId} . Needs to be != 0, because 0 is reserved for local player.");
+                Debug.LogError($"Server.HandleConnect: invalid connectionId={connectionId}. Needs to be != 0, because 0 is reserved for local player.");
                 return false;
             }
 
             // connectionId not in use yet?
             if (connections.ContainsKey(connectionId))
             {
-                Debug.LogError($"Server connectionId {connectionId} already in use...client will be kicked");
+                Debug.LogError($"Server connectionId={connectionId} already in use. Client with address={address} will be kicked");
                 return false;
             }
 
@@ -696,7 +716,7 @@ namespace Mirror
             //  Transport can't do that)
             if (connections.Count >= maxConnections)
             {
-                Debug.LogError($"Server full, client {connectionId} will be kicked");
+                Debug.LogError($"Server full, client connectionId={connectionId} with address={address} will be kicked");
                 return false;
             }
 

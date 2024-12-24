@@ -36,6 +36,12 @@ public class MainMenuManager : MonoBehaviour
     public NetworkDiscovery networkDiscovery;
 
 
+    void Awake()
+    {
+        LocalPlayerData.Init();
+    }
+
+
     /// <summary>
     /// Opens the settings menu
     /// </summary>
