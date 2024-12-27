@@ -36,15 +36,26 @@ public class EnnemyManager : NetworkBehaviour
     /// <param name="ennemy">The ennemy to unregister</param>
     public void UnRegisterEnnemy(Ennemy ennemy)
     {
-        if (isServer)
+        if (isServer && ennemies.Count > 0)
         {
             ennemies.Remove(ennemy);
 
             if (ennemies.Count == 0)
             {
                 // End
+                RpcOpenEndScreen();
             }
         }
+    }
+
+    /// <summary>
+    /// Opens the end screen (clients)
+    /// </summary>
+    [ClientRpc]
+    void RpcOpenEndScreen()
+    {
+        PlayerNetwork.localPlayer.CanMove = false;
+        GameGUI.instance.OpenEndMenu();
     }
 
 }

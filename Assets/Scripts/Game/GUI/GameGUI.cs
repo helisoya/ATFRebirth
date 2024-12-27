@@ -31,6 +31,7 @@ public class GameGUI : MonoBehaviour
 
     [Header("End")]
     [SerializeField] private GameObject endRoot;
+    [SerializeField] private GameObject toLobbyButton;
 
     void Awake()
     {
@@ -117,6 +118,19 @@ public class GameGUI : MonoBehaviour
         endRoot.SetActive(true);
         menuRoot.SetActive(false);
         gameplayRoot.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        toLobbyButton.SetActive(!PlayerNetwork.localPlayer.isClientOnly);
+    }
+
+    /// <summary>
+    /// Click event for returning to the lobby
+    /// </summary>
+    public void Click_ToLobby()
+    {
+        NetworkManager.singleton.ServerChangeScene(((NetworkRoomManager)NetworkManager.singleton).RoomScene);
     }
 
 

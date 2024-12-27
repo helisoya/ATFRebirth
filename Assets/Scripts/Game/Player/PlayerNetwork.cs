@@ -24,6 +24,8 @@ public class PlayerNetwork : NetworkBehaviour
     public PlayerInterraction interraction { get { return _interraction; } }
     public PlayerHealth health { get { return _health; } }
 
+    public bool CanMove { get; set; }
+
     [SyncVar(hook = nameof(RefreshPlayerName))] public string username;
 
     public static PlayerNetwork localPlayer;
@@ -47,7 +49,7 @@ public class PlayerNetwork : NetworkBehaviour
         if (isLocalPlayer)
         {
             localPlayer = this;
-
+            CanMove = true;
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -76,6 +78,6 @@ public class PlayerNetwork : NetworkBehaviour
     /// <param name="newValue">The new username</param>
     void RefreshPlayerName(string oldValue, string newValue)
     {
-        playerName.SetText(username);
+        playerName.SetText(newValue);
     }
 }

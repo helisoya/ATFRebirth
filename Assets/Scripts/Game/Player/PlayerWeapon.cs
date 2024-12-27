@@ -197,7 +197,7 @@ public class PlayerWeapon : NetworkBehaviour
     void Update()
     {
 
-        if (InCooldown || !PlayerNetwork.localPlayer.health.Alive) return;
+        if (InCooldown || !PlayerNetwork.localPlayer.health.Alive || !PlayerNetwork.localPlayer.CanMove) return;
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {

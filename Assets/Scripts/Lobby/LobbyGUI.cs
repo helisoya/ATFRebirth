@@ -22,6 +22,25 @@ public class LobbyGUI : MonoBehaviour
     }
 
     /// <summary>
+    /// Gets the player's linked GUI
+    /// </summary>
+    /// <param name="id">The player's ID</param>
+    /// <returns>The player's GUI (or null if it wasn't setup)</returns>
+    private LobbyPlayerGUI GetPlayerGUI(uint id)
+    {
+        LobbyPlayerGUI gui;
+        foreach (Transform child in playersRoot)
+        {
+            gui = child.GetComponent<LobbyPlayerGUI>();
+            if (gui.Code == id)
+            {
+                return gui;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
     /// Sets the local player
     /// </summary>
     /// <param name="lobbyPlayer">The local player</param>
@@ -36,7 +55,11 @@ public class LobbyGUI : MonoBehaviour
     /// <param name="id">The player's netId</param>
     public void AddPlayer(uint id)
     {
-        Instantiate(prefabPlayer, playersRoot).Code = id;
+        LobbyPlayerGUI gui = GetPlayerGUI(id);
+        if (!gui)
+        {
+            Instantiate(prefabPlayer, playersRoot).Code = id;
+        }
     }
 
     /// <summary>
@@ -45,13 +68,10 @@ public class LobbyGUI : MonoBehaviour
     /// <param name="id">The player's netId</param>
     public void RemovePlayer(uint id)
     {
-        foreach (Transform child in playersRoot)
+        LobbyPlayerGUI gui = GetPlayerGUI(id);
+        if (gui)
         {
-            if (child.GetComponent<LobbyPlayerGUI>().Code == id)
-            {
-                Destroy(child.gameObject);
-                return;
-            }
+            Destroy(gui.gameObject);
         }
     }
 
@@ -62,15 +82,10 @@ public class LobbyGUI : MonoBehaviour
     /// <param name="newName">The player's name</param>
     public void EditPlayerName(uint id, string newName)
     {
-        LobbyPlayerGUI player;
-        foreach (Transform child in playersRoot)
+        LobbyPlayerGUI gui = GetPlayerGUI(id);
+        if (gui)
         {
-            player = child.GetComponent<LobbyPlayerGUI>();
-            if (player.Code == id)
-            {
-                player.SetPlayerName(newName);
-                return;
-            }
+            gui.SetPlayerName(newName);
         }
     }
 
@@ -81,15 +96,10 @@ public class LobbyGUI : MonoBehaviour
     /// <param name="newColor">The player's color</param>
     public void EditPlayerColor(uint id, Color newColor)
     {
-        LobbyPlayerGUI player;
-        foreach (Transform child in playersRoot)
+        LobbyPlayerGUI gui = GetPlayerGUI(id);
+        if (gui)
         {
-            player = child.GetComponent<LobbyPlayerGUI>();
-            if (player.Code == id)
-            {
-                player.SetColor(newColor);
-                return;
-            }
+            gui.SetColor(newColor);
         }
     }
 

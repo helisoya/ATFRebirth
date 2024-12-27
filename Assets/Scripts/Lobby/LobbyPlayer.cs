@@ -10,7 +10,6 @@ public class LobbyPlayer : NetworkRoomPlayer
 
     [SyncVar(hook = nameof(EditPlayerName))] private string username;
 
-
     /// <summary>
     /// Edits a player's name on the GUI
     /// </summary>
@@ -25,10 +24,6 @@ public class LobbyPlayer : NetworkRoomPlayer
 
     public override void OnStartClient()
     {
-        // Add on GUI
-
-        LobbyGUI.instance.AddPlayer(GetComponent<NetworkIdentity>().netId);
-
         if (isLocalPlayer)
         {
             LobbyGUI.instance.SetLocalPlayer(this);
@@ -77,7 +72,16 @@ public class LobbyPlayer : NetworkRoomPlayer
     /// This is a hook that is invoked on all player objects when entering the room.
     /// <para>Note: isLocalPlayer is not guaranteed to be set until OnStartLocalPlayer is called.</para>
     /// </summary>
-    public override void OnClientEnterRoom() { }
+    public override void OnClientEnterRoom()
+    {
+        LobbyGUI.instance.AddPlayer(GetComponent<NetworkIdentity>().netId);
+        LobbyGUI.instance.EditPlayerName(GetComponent<NetworkIdentity>().netId, username);
+
+        if (isLocalPlayer)
+        {
+            LobbyGUI.instance.SetLocalPlayer(this);
+        }
+    }
 
     /// <summary>
     /// This is a hook that is invoked on all player objects when exiting the room.
@@ -103,7 +107,8 @@ public class LobbyPlayer : NetworkRoomPlayer
     /// <param name="newReadyState">The new readyState value</param>
     public override void ReadyStateChanged(bool oldReadyState, bool newReadyState)
     {
-        LobbyGUI.instance.EditPlayerColor(GetComponent<NetworkIdentity>().netId, newReadyState ? Color.green : Color.black);
+        if (LobbyGUI.instance != null && gameObject != null)
+            LobbyGUI.instance.EditPlayerColor(GetComponent<NetworkIdentity>().netId, newReadyState ? Color.green : Color.black);
     }
 
     #endregion
