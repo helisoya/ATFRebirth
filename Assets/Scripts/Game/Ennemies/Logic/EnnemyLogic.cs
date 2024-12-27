@@ -11,7 +11,7 @@ public class EnnemyLogic : NetworkBehaviour
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected NetworkedAnimator animator;
 
-    public bool Activated { get; set; } = true;
+    public bool Activated { get; private set; } = true;
 
     void Start()
     {
@@ -22,6 +22,14 @@ public class EnnemyLogic : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Desactivate the AI
+    /// </summary>
+    public void Desactivate()
+    {
+        Activated = false;
+        agent.isStopped = true;
+    }
 
     void Update()
     {

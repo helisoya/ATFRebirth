@@ -58,7 +58,7 @@ public class PlayerNetwork : NetworkBehaviour
         }
 
         GameManager.instance.players.Add(this);
-        gameObject.name = "Player(" + GetComponent<NetworkIdentity>().netId + "-" + LocalPlayerData.Username + ")";
+        gameObject.name = "Player(" + GetComponent<NetworkIdentity>().netId + "-" + username + ")";
     }
 
     /// <summary>
@@ -79,5 +79,6 @@ public class PlayerNetwork : NetworkBehaviour
     void RefreshPlayerName(string oldValue, string newValue)
     {
         playerName.SetText(newValue);
+        gameObject.name = "Player(" + GetComponent<NetworkIdentity>().netId + "-" + newValue + ")";
     }
 }

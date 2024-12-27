@@ -38,7 +38,7 @@ public class Ennemy : NetworkBehaviour
         if (health == 0)
         {
             // Die
-            logic.Activated = false;
+            logic.Desactivate();
             RpcActivateRagdoll();
             EnnemyManager.instance.UnRegisterEnnemy(this);
 
