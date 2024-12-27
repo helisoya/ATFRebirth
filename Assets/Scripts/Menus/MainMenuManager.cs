@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using Mirror;
 using Mirror.Discovery;
@@ -30,6 +32,10 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Transform serverParent;
     [SerializeField] private GameObject prefabServer;
     [SerializeField] private TMP_InputField ipInput;
+
+    [Header("Direct Connect Popup")]
+    [SerializeField] private GameObject directConnectRoot;
+    [SerializeField] private TMP_InputField directConnectInputField;
 
 
     Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
@@ -171,11 +177,32 @@ public class MainMenuManager : MonoBehaviour
     /// <exception cref="System.Exception">Error</exception>
     public string GetLocalIPv4()
     {
+
+        foreach (NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces())
+        {
+            foreach (UnicastIPAddressInformation unicastIPAddressInformation in adapter.GetIPProperties().UnicastAddresses)
+            {
+                if (unicastIPAddressInformation.Address.AddressFamily == AddressFamily.InterNetwork && adapter.OperationalStatus == OperationalStatus.Up)
+                {
+                    uint ipAddress = BitConverter.ToUInt32(unicastIPAddressInformation.Address.GetAddressBytes(), 0);
+                    uint ipMaskV4 = BitConverter.ToUInt32(unicastIPAddressInformation.IPv4Mask.GetAddressBytes(), 0);
+                    uint broadCastIpAddress = ipAddress | ~ipMaskV4;
+
+                    return new IPAddress(BitConverter.GetBytes(broadCastIpAddress)).ToString();
+                }
+            }
+        }
+
+        return "localhost";
+
+
         IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+
         foreach (IPAddress ip in host.AddressList)
         {
             if (ip.AddressFamily == AddressFamily.InterNetwork)
             {
+                ip.MapToIPv4();
                 return ip.ToString();
             }
         }
@@ -202,6 +229,14 @@ public class MainMenuManager : MonoBehaviour
     {
         StopSearchingServers();
         networkDiscovery.StartDiscovery();
+    }
+
+    /// <summary>
+    /// Refresh the servers list
+    /// </summary>
+    public void RefreshServers()
+    {
+        SearchServers();
     }
 
     /// <summary>
@@ -239,5 +274,33 @@ public class MainMenuManager : MonoBehaviour
         RectTransform rect = serverParent.GetComponent<RectTransform>();
 
         rect.sizeDelta = new Vector2(rect.sizeDelta.x, 30 * discoveredServers.Keys.Count);
+    }
+
+    /// Direct Connect popup
+
+    /// <summary>
+    /// Sets the direct connection popup active
+    /// </summary>
+    /// <param name="value">Is the popup active ?</param>
+    public void SetDirectConnectOpen(bool value)
+    {
+        directConnectRoot.SetActive(value);
+    }
+
+    /// <summary>
+    /// Tries to connect directly to the specified address
+    /// </summary>
+    public void TryDirectConnect()
+    {
+        NetworkManager.singleton.networkAddress = directConnectInputField.text;
+        try
+        {
+            NetworkManager.singleton.StartClient();
+        }
+        catch
+        {
+            SetDirectConnectOpen(false);
+        }
+
     }
 }

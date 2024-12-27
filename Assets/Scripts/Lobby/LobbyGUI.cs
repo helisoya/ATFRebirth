@@ -96,7 +96,14 @@ public class LobbyGUI : MonoBehaviour
 
     public void Click_Quit()
     {
-        localPlayer.Disconnect();
+        if (localPlayer.isClientOnly)
+        {
+            NetworkManager.singleton.StopClient();
+        }
+        else
+        {
+            NetworkManager.singleton.StopHost();
+        }
     }
 
     public void Click_ReadyUp()
