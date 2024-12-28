@@ -10,18 +10,18 @@ public class ServerButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;
 
     private ServerResponse response;
-    private MainMenuManager parent;
+    private MainMenuServerTab parent;
 
     /// <summary>
     /// Initialize the button 
     /// </summary>
     /// <param name="info">The linked server</param>
     /// <param name="list">The button's parent</param>
-    public void Init(ServerResponse info, MainMenuManager list)
+    public void Init(ServerResponse info, MainMenuServerTab parent)
     {
         text.text = info.EndPoint.Address.ToString();
         response = info;
-        parent = list;
+        this.parent = parent;
     }
 
     /// <summary>
