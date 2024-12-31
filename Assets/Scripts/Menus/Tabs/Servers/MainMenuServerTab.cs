@@ -17,10 +17,10 @@ public class MainMenuServerTab : MainMenuTab
     [SerializeField] private Transform serverParent;
     [SerializeField] private GameObject prefabServer;
     [SerializeField] private TMP_InputField ipInput;
-    [SerializeField] private NetworkDiscovery networkDiscovery;
+    [SerializeField] private ATFNetworkDiscovery networkDiscovery;
     [SerializeField] private MainMenuTab directConnectTab;
 
-    Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
+    Dictionary<long, DiscoveryResponse> discoveredServers = new Dictionary<long, DiscoveryResponse>();
 
 
     protected override void OnOpen()
@@ -124,8 +124,9 @@ public class MainMenuServerTab : MainMenuTab
     /// Connect to an existing server
     /// </summary>
     /// <param name="info">The server info</param>
-    public void StartClient(ServerResponse info)
+    public void StartClient(DiscoveryResponse info)
     {
+        if (info.TotalPlayers >= info.MaxPlayers) return;
         networkDiscovery.StopDiscovery();
         NetworkManager.singleton.StartClient(info.uri);
     }
@@ -134,7 +135,7 @@ public class MainMenuServerTab : MainMenuTab
     /// Callback for discovering a server
     /// </summary>
     /// <param name="info">The server's info</param>
-    public void OnDiscoveredServer(ServerResponse info)
+    public void OnDiscoveredServer(DiscoveryResponse info)
     {
         if (discoveredServers.ContainsKey(info.serverId)) return;
 

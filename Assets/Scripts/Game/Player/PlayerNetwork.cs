@@ -61,6 +61,12 @@ public class PlayerNetwork : NetworkBehaviour
         gameObject.name = "Player(" + GetComponent<NetworkIdentity>().netId + "-" + username + ")";
     }
 
+    public override void OnStopClient()
+    {
+        GameManager.instance.players.Remove(this);
+    }
+
+
     /// <summary>
     /// Initialize the networked data (Server)
     /// </summary>

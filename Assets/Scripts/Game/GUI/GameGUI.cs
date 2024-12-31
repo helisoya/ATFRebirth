@@ -12,7 +12,7 @@ public class GameGUI : MonoBehaviour
 {
     public static GameGUI instance { get; private set; }
 
-    public bool inMenu { get { return menuRoot.activeInHierarchy; } }
+    public bool inMenu { get { return menuRoot.activeInHierarchy || endRoot.activeInHierarchy; } }
 
     [Header("Interaction")]
     [SerializeField] private TextMeshProUGUI interactionText;
@@ -133,6 +133,29 @@ public class GameGUI : MonoBehaviour
         NetworkManager.singleton.ServerChangeScene(((NetworkRoomManager)NetworkManager.singleton).RoomScene);
     }
 
+    /// <summary>
+    /// Click event for continuing the game 
+    /// </summary>
+    public void Click_Continue()
+    {
+        SetPauseOpen(false);
+    }
+
+    /// <summary>
+    /// Click event for quiting the game
+    /// </summary>
+    public void Click_Quit()
+    {
+        if (PlayerNetwork.localPlayer.isClientOnly)
+        {
+            NetworkManager.singleton.StopClient();
+        }
+        else
+        {
+            NetworkManager.singleton.StopHost();
+        }
+    }
+
 
 
     void Update()
@@ -145,11 +168,11 @@ public class GameGUI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
-            FindFirstObjectByType<NetworkManager>().StartHost();
+            NetworkManager.singleton.StartHost();
         }
         else if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            FindFirstObjectByType<NetworkManager>().StartClient();
+            NetworkManager.singleton.StartClient();
         }
     }
 }
