@@ -52,4 +52,12 @@ public class EnnemyLogic : NetworkBehaviour
     {
 
     }
+
+    /// <summary>
+    /// Callback for when the ennemy is being attacked
+    /// </summary>
+    public virtual void OnAggression()
+    {
+
+    }
 }

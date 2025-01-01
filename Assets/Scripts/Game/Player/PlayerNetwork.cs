@@ -15,6 +15,7 @@ public class PlayerNetwork : NetworkBehaviour
     [SerializeField] private GameObject[] objectsToDisableIfClient;
     [SerializeField] private GameObject[] disableWhenDead;
     [SerializeField] private AudioListener audioListener;
+    [SerializeField] private Camera cam;
 
     [Header("Components")]
     [SerializeField] private PlayerWeapon _weapon;
@@ -25,7 +26,6 @@ public class PlayerNetwork : NetworkBehaviour
     public PlayerWeapon weapon { get { return _weapon; } }
     public PlayerInterraction interraction { get { return _interraction; } }
     public PlayerHealth health { get { return _health; } }
-    public Camera cam;
 
     public bool CanMove { get; set; }
 
@@ -52,6 +52,7 @@ public class PlayerNetwork : NetworkBehaviour
         }
 
         cam.enabled = isLocalPlayer;
+        audioListener.enabled = isLocalPlayer;
 
         if (isLocalPlayer)
         {
@@ -62,11 +63,6 @@ public class PlayerNetwork : NetworkBehaviour
             Cursor.visible = false;
 
             InitDataCmd(LocalPlayerData.Username);
-        }
-        else
-        {
-            audioListener.enabled = false;
-            Destroy(audioListener);
         }
 
         GameManager.instance.players.Add(this);
@@ -90,10 +86,20 @@ public class PlayerNetwork : NetworkBehaviour
             obj.SetActive(false);
         }
 
-        cam.enabled = false;
+        SetCameraActive(false);
         currentPlayerIdx = GameManager.instance.players.FindIndex(x => x == this);
         GameManager.instance.players[currentPlayerIdx].cam.enabled = true;
         FindFirstUserAlive(1);
+    }
+
+    /// <summary>
+    /// Sets if the camera active
+    /// </summary>
+    /// <param name="active">Is the camera active ?</param>
+    public void SetCameraActive(bool active)
+    {
+        cam.enabled = active;
+        audioListener.enabled = active;
     }
 
     /// <summary>
@@ -103,16 +109,15 @@ public class PlayerNetwork : NetworkBehaviour
     {
         List<PlayerNetwork> players = GameManager.instance.players;
         int delta = (currentPlayerIdx + direction + players.Count) % players.Count;
-        print("Starting from " + delta);
 
         while (delta != currentPlayerIdx)
         {
-            print(delta + " : " + players[delta].health.Alive);
             if (players[delta].health.Alive)
             {
-                players[currentPlayerIdx].cam.enabled = false;
+
+                players[currentPlayerIdx].SetCameraActive(false);
                 currentPlayerIdx = delta;
-                players[currentPlayerIdx].cam.enabled = true;
+                players[currentPlayerIdx].SetCameraActive(true);
                 GameGUI.instance.SetDeadUserName(players[currentPlayerIdx].username);
                 return;
             }

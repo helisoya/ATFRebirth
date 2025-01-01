@@ -21,6 +21,8 @@ public class TerroristLogic : EnnemyLogic
         // Find most direct player
         foreach (PlayerNetwork player in GameManager.instance.players)
         {
+            if (!player.health.Alive) continue;
+
             computedDist = Vector3.Distance(transform.position, player.transform.position);
             if (computedDist < minDist)
             {
@@ -45,6 +47,7 @@ public class TerroristLogic : EnnemyLogic
 
         if (!currentTarget)
         {
+            agent.isStopped = true;
             animator.SetFloat("Speed", 0);
             return;
         }
@@ -79,6 +82,11 @@ public class TerroristLogic : EnnemyLogic
     {
         base.Setup();
         hasAquiredTargetAlready = false;
+    }
+
+    public override void OnAggression()
+    {
+        hasAquiredTargetAlready = true;
     }
 
 

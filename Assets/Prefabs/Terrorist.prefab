@@ -155,9 +155,6 @@ MonoBehaviour:
   fireRange: 10
   fireSpeed: 0.5
   audioSource: {fileID: 2990232560503293735}
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!82 &2990232560503293735
 AudioSource:
   m_ObjectHideFlags: 0
@@ -409,10 +406,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.23997754
-  m_Height: 1.2847326
+  m_Radius: 0.3
+  m_Height: 1.44939
   m_Direction: 1
-  m_Center: {x: -0.007108927, y: 0.73232174, z: -0.03435892}
+  m_Center: {x: -0.007108927, y: 0.8146505, z: -0.03435892}
 --- !u!114 &3905662710054268600
 MonoBehaviour:
   m_ObjectHideFlags: 0

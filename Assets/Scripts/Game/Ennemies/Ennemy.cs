@@ -47,6 +47,10 @@ public class Ennemy : NetworkBehaviour
                 NetworkServer.Spawn(Instantiate(prefabAmmoBox, transform.position, Quaternion.identity));
             }
         }
+        else
+        {
+            logic.OnAggression();
+        }
     }
 
     /// <summary>
