@@ -31,7 +31,7 @@ public class TerroristLogic : EnnemyLogic
 
         RaycastHit hit;
         bool hasLineOfSight = false;
-        if (selectedPlayer && Physics.Raycast(transform.position, (selectedPlayer.transform.position - transform.position).normalized, out hit, fireRange))
+        if (selectedPlayer && Physics.Raycast(transform.position, ((selectedPlayer.transform.position + Vector3.up) - transform.position).normalized, out hit, fireRange))
         {
             hasLineOfSight = hit.transform.gameObject.layer == 8;
         }
@@ -43,7 +43,12 @@ public class TerroristLogic : EnnemyLogic
             currentTarget = selectedPlayer;
         }
 
-        if (!currentTarget) return;
+        if (!currentTarget)
+        {
+            animator.SetFloat("Speed", 0);
+            return;
+        }
+
         // Do if has a target
 
         transform.LookAt(currentTarget.transform.position);

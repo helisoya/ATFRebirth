@@ -28,6 +28,11 @@ public class GameGUI : MonoBehaviour
 
     [Header("Pause")]
     [SerializeField] private GameObject menuRoot;
+    private GameObject lastGameplayRoot;
+
+    [Header("Dead")]
+    [SerializeField] private GameObject deadRoot;
+    [SerializeField] private TextMeshProUGUI deadCurrentPlayerText;
 
     [Header("End")]
     [SerializeField] private GameObject endRoot;
@@ -36,6 +41,8 @@ public class GameGUI : MonoBehaviour
     void Awake()
     {
         instance = this;
+
+        lastGameplayRoot = gameplayRoot;
 
         SetInteractionText("");
         SetHealthFillAmount(1f);
@@ -92,10 +99,24 @@ public class GameGUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Opens the death menu
+    /// </summary>
+    public void OpenDeadMenu()
+    {
+        gameplayRoot.SetActive(false);
+        deadRoot.SetActive(true);
+        lastGameplayRoot = deadRoot;
+    }
 
-
-
-
+    /// <summary>
+    /// Sets the currently's followed player in dead mode
+    /// </summary>
+    /// <param name="username">The player's username</param>
+    public void SetDeadUserName(string username)
+    {
+        deadCurrentPlayerText.text = "< " + username + " >";
+    }
 
 
     /// <summary>
@@ -107,7 +128,7 @@ public class GameGUI : MonoBehaviour
         Cursor.lockState = isOpen ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = isOpen;
         menuRoot.SetActive(isOpen);
-        gameplayRoot.SetActive(!isOpen);
+        lastGameplayRoot.SetActive(!isOpen);
     }
 
     /// <summary>
@@ -117,6 +138,7 @@ public class GameGUI : MonoBehaviour
     {
         endRoot.SetActive(true);
         menuRoot.SetActive(false);
+        deadRoot.SetActive(false);
         gameplayRoot.SetActive(false);
 
         Cursor.lockState = CursorLockMode.None;
@@ -164,7 +186,6 @@ public class GameGUI : MonoBehaviour
         {
             SetPauseOpen(!inMenu);
         }
-
 
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {

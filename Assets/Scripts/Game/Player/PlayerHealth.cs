@@ -9,17 +9,14 @@ public class PlayerHealth : NetworkBehaviour
     [Header("Infos")]
     [SerializeField] private int maxHealth = 20;
     [SerializeField] private RagdollManager ragdollManager;
+    [SerializeField] private GameObject userNameRoot;
     private int health;
 
-    public bool Alive { get; private set; }
+    public bool Alive { get; private set; } = true;
 
     void Start()
     {
-        if (isLocalPlayer)
-        {
-            Alive = true;
-            health = maxHealth;
-        }
+        health = maxHealth;
     }
 
     /// <summary>
@@ -36,6 +33,7 @@ public class PlayerHealth : NetworkBehaviour
         if (health == 0)
         {
             Alive = false;
+            PlayerNetwork.localPlayer.StartDeadMode();
             CmdActivateRagdoll();
         }
     }
@@ -58,8 +56,32 @@ public class PlayerHealth : NetworkBehaviour
     [Command(requiresAuthority = false)]
     void CmdActivateRagdoll()
     {
-        ragdollManager.ActivateRagdoll();
+        Alive = false;
+        CheckDeaths();
         RpcActivateRagdoll();
+    }
+
+    /// <summary>
+    /// Checks if the players are all dead
+    /// Ends the game if so
+    /// </summary>
+    [ServerCallback]
+    private void CheckDeaths()
+    {
+        foreach (PlayerNetwork player in GameManager.instance.players)
+        {
+            if (player.health.Alive) return;
+        }
+        RpcOpenEndScreen();
+    }
+
+    /// <summary>
+    /// Opens the end menu (Clients)
+    /// </summary>
+    [ClientRpc(includeOwner = true)]
+    void RpcOpenEndScreen()
+    {
+        GameGUI.instance.OpenEndMenu();
     }
 
     /// <summary>
@@ -69,5 +91,7 @@ public class PlayerHealth : NetworkBehaviour
     void RpcActivateRagdoll()
     {
         ragdollManager.ActivateRagdoll();
+        Alive = false;
+        userNameRoot.SetActive(false);
     }
 }

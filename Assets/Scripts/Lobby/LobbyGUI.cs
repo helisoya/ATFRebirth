@@ -31,6 +31,8 @@ public class LobbyGUI : MonoBehaviour
         LobbyPlayerGUI gui;
         foreach (Transform child in playersRoot)
         {
+            if (child == null) continue;
+
             gui = child.GetComponent<LobbyPlayerGUI>();
             if (gui.Code == id)
             {

@@ -359,7 +359,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2162016855779241314}
   - component: {fileID: 2162016855779241313}
-  - component: {fileID: 2162016855779241312}
   - component: {fileID: 2162016855779241315}
   m_Layer: 0
   m_Name: Main Camera
@@ -436,14 +435,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &2162016855779241312
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2162016855779241327}
-  m_Enabled: 1
 --- !u!114 &2162016855779241315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -570,6 +561,7 @@ GameObject:
   - component: {fileID: 1083200549367434198}
   - component: {fileID: 2070996228282107317}
   - component: {fileID: 3399637954934002359}
+  - component: {fileID: 1840995050863011931}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -811,18 +803,25 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   objectsToDisableIfNotClient:
-  - {fileID: 2162016855779241327}
+  - {fileID: 2162016856202737383}
+  - {fileID: 2162016855774726423}
   behavioursToDisableIfNotClient:
   - {fileID: 2162016856896261178}
   - {fileID: 2162016856896261177}
   - {fileID: 2162016856896261159}
   - {fileID: 3399637954934002359}
+  - {fileID: 2162016855779241315}
   objectsToDisableIfClient:
   - {fileID: 2162016857268327063}
+  disableWhenDead:
+  - {fileID: 2162016856202737383}
+  - {fileID: 2162016855774726423}
+  audioListener: {fileID: 1840995050863011931}
   _weapon: {fileID: 2162016856896261177}
   _interraction: {fileID: 2162016856896261178}
   _health: {fileID: 3399637954934002359}
   playerName: {fileID: 3799691901392856103}
+  cam: {fileID: 2162016855779241313}
   username: 
 --- !u!114 &1083200549367434198
 MonoBehaviour:
@@ -891,6 +890,15 @@ MonoBehaviour:
   syncInterval: 0
   maxHealth: 20
   ragdollManager: {fileID: 700210063082909826}
+  userNameRoot: {fileID: 6628195203744934622}
+--- !u!81 &1840995050863011931
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2162016856896261156}
+  m_Enabled: 1
 --- !u!1 &2162016857253109429
 GameObject:
   m_ObjectHideFlags: 0
