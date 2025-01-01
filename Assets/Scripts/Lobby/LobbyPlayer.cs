@@ -55,6 +55,27 @@ public class LobbyPlayer : NetworkRoomPlayer
     }
 
     /// <summary>
+    /// Sets the next map (Host only)
+    /// </summary>
+    /// <param name="mapName">The next's map name</param>
+    public void SetNextMap(string mapName)
+    {
+        if (isClientOnly) return;
+
+        CmdSetNextMap(mapName);
+    }
+
+    /// <summary>
+    /// Sets the next map (Server)
+    /// </summary>
+    /// <param name="mapName">The next map's name</param>
+    [Command(requiresAuthority = false)]
+    private void CmdSetNextMap(string mapName)
+    {
+        ((NetworkRoomManager)NetworkRoomManager.singleton).GameplayScene = mapName;
+    }
+
+    /// <summary>
     /// Edits the Player username (Server)
     /// </summary>
     /// <param name="newUsername"></param>
@@ -81,6 +102,8 @@ public class LobbyPlayer : NetworkRoomPlayer
         {
             LobbyGUI.instance.SetLocalPlayer(this);
         }
+
+        LobbyGUI.instance.ShowHostOnlyUI(!isClientOnly);
     }
 
     /// <summary>

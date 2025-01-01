@@ -1,4 +1,5 @@
 using Mirror;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,11 +15,40 @@ public class LobbyGUI : MonoBehaviour
     [SerializeField] private Image readyUpButton;
     private LobbyPlayer localPlayer;
 
+
+    [Header("Host Only")]
+    [SerializeField] private GameObject hostOnlyRoot;
+    [SerializeField] private TextMeshProUGUI currentMapText;
+    [SerializeField] private Transform mapsRoot;
+    [SerializeField] private MapButton mapButtonPrefab;
+    [SerializeField] private ATFMaps maps;
     public static LobbyGUI instance;
 
     void Awake()
     {
         instance = this;
+        InitMaps();
+    }
+
+    /// <summary>
+    /// Initialize the map selection
+    /// </summary>
+    private void InitMaps()
+    {
+        foreach (ATFMap map in maps.maps)
+        {
+            Instantiate(mapButtonPrefab, mapsRoot).Init(map);
+        }
+    }
+
+    /// <summary>
+    /// Selects a map
+    /// </summary>
+    /// <param name="map">The map to select</param>
+    public void SelectMap(ATFMap map)
+    {
+        currentMapText.text = map.displayName;
+        localPlayer.SetNextMap(map.mapName);
     }
 
     /// <summary>
@@ -49,6 +79,7 @@ public class LobbyGUI : MonoBehaviour
     public void SetLocalPlayer(LobbyPlayer lobbyPlayer)
     {
         localPlayer = lobbyPlayer;
+        SelectMap(maps.maps[0]);
     }
 
     /// <summary>
@@ -105,7 +136,18 @@ public class LobbyGUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Changes if the host-only UI is active or not
+    /// </summary>
+    /// <param name="value">Is the host-only UI active ?</param>
+    public void ShowHostOnlyUI(bool value)
+    {
+        hostOnlyRoot.SetActive(value);
+    }
 
+    /// <summary>
+    /// Click event for quiting the lobby
+    /// </summary>
     public void Click_Quit()
     {
         if (localPlayer.isClientOnly)
@@ -118,6 +160,9 @@ public class LobbyGUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Click event for readying up
+    /// </summary>
     public void Click_ReadyUp()
     {
         readyUpButton.color = localPlayer.readyToBegin ? Color.white : Color.green;
