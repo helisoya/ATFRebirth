@@ -109,7 +109,9 @@ public class LobbyPlayer : NetworkRoomPlayer
     /// <summary>
     /// This is a hook that is invoked on all player objects when exiting the room.
     /// </summary>
-    public override void OnClientExitRoom() { }
+    public override void OnClientExitRoom()
+    {
+    }
 
     #endregion
 

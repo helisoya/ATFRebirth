@@ -16,3 +16,6 @@ MonoBehaviour:
   - displayName: Test Map
     mapName: Assets/Scenes/Maps/SampleScene.unity
     mapSprite: {fileID: 21300000, guid: 0b904f75724f6a64d8012aef2cb06b1b, type: 3}
+  - displayName: Forest
+    mapName: Assets/Scenes/Maps/Forest.unity
+    mapSprite: {fileID: 21300000, guid: 5393f9f0216650743afef29a8514e948, type: 3}

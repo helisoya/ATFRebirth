@@ -58,6 +58,9 @@ public class LobbyGUI : MonoBehaviour
     /// <returns>The player's GUI (or null if it wasn't setup)</returns>
     private LobbyPlayerGUI GetPlayerGUI(uint id)
     {
+        if (!playersRoot) return null;
+
+
         LobbyPlayerGUI gui;
         foreach (Transform child in playersRoot)
         {
