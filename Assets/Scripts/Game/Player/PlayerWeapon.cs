@@ -289,8 +289,8 @@ public class PlayerWeapon : NetworkBehaviour
     /// <summary>
     /// Searches for a target in front of the player
     /// </summary>
-    /// <param name="range"></param>
-    /// <param name="dmg"></param>
+    /// <param name="range">Max Range</param>
+    /// <param name="dmg">Weapon damage</param>
     [Command]
     void SearchForTarget(float range, int dmg, Vector3 forward)
     {
@@ -299,6 +299,7 @@ public class PlayerWeapon : NetworkBehaviour
 
         if (Physics.Raycast(camTrans.position, forward, out hit, range))
         {
+            print(hit.transform);
             hit.transform.SendMessage("OnTakeHit", dmg, SendMessageOptions.DontRequireReceiver);
 
             /*
