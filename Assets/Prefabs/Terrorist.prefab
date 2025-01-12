@@ -1028,7 +1028,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   animator: {fileID: 6569856980948923922}
-  isServerBased: 0
+  isServerBased: 1
 --- !u!1 &2798990373710568731 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1082271958561512970, guid: a0559c98c878b24489005e23ed141acb,

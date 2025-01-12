@@ -12,6 +12,8 @@ public class NetworkedAnimator : NetworkBehaviour
     private Dictionary<string, float> fValues = new Dictionary<string, float>();
     private Dictionary<string, bool> bValues = new Dictionary<string, bool>();
 
+    public Animator BaseAnimator { get { return animator; } }
+
 
     public void ChangeRuntimeAnimator(RuntimeAnimatorController controller)
     {

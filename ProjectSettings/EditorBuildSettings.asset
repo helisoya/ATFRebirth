@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Maps/Forest.unity
     guid: f04aa754390940d47b3068fc6a035e1b
+  - enabled: 1
+    path: Assets/Scenes/Maps/Bigfoot.unity
+    guid: 366b4969f587d694ca5070f20aa875bf
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
