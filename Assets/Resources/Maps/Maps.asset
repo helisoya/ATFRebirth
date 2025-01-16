@@ -19,3 +19,6 @@ MonoBehaviour:
   - displayName: Bigfoot
     mapName: Assets/Scenes/Maps/Bigfoot.unity
     mapSprite: {fileID: 21300000, guid: ced22212d083fb2459d08ace8dc23645, type: 3}
+  - displayName: Facility
+    mapName: Assets/Scenes/Maps/Facility.unity
+    mapSprite: {fileID: 21300000, guid: 9a6cc69938d2080459f8760577e89d4c, type: 3}
