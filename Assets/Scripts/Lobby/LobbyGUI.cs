@@ -12,7 +12,7 @@ public class LobbyGUI : MonoBehaviour
     [Header("Players")]
     [SerializeField] private Transform playersRoot;
     [SerializeField] private LobbyPlayerGUI prefabPlayer;
-    [SerializeField] private Image readyUpButton;
+    [SerializeField] private TextMeshProUGUI readyUpButton;
     private LobbyPlayer localPlayer;
 
 

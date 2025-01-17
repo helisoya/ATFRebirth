@@ -6376,7 +6376,7 @@ MonoBehaviour:
   playersRoot: {fileID: 538954525}
   prefabPlayer: {fileID: 9127006133513108766, guid: 5487529a6684d524ab7ce3570bda4936,
     type: 3}
-  readyUpButton: {fileID: 0}
+  readyUpButton: {fileID: 319824774}
   hostOnlyRoot: {fileID: 2069655876}
   currentMapText: {fileID: 1397719414}
   mapsRoot: {fileID: 390361736}
