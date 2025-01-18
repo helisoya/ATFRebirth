@@ -28,6 +28,9 @@ public class LobbyGUI : MonoBehaviour
     {
         instance = this;
         InitMaps();
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     /// <summary>

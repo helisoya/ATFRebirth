@@ -19,6 +19,9 @@ public class MainMenuManager : MonoBehaviour
         settingsTab.SetMenu(this);
         serversTab.SetMenu(this);
         loadoutTab.SetMenu(this);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
 
