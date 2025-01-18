@@ -817,11 +817,11 @@ MonoBehaviour:
   - {fileID: 2162016856202737383}
   - {fileID: 2162016855774726423}
   audioListener: {fileID: 1840995050863011931}
+  cam: {fileID: 2162016855779241313}
   _weapon: {fileID: 2162016856896261177}
   _interraction: {fileID: 2162016856896261178}
   _health: {fileID: 3399637954934002359}
   playerName: {fileID: 3799691901392856103}
-  cam: {fileID: 2162016855779241313}
   username: 
 --- !u!114 &1083200549367434198
 MonoBehaviour:
@@ -1099,7 +1099,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 1009149064168187150, guid: 1769ff53e8cc63243a6b58c1e5ca0da1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1143,8 +1143,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Player
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1769ff53e8cc63243a6b58c1e5ca0da1, type: 2}
+  m_sharedMaterial: {fileID: 1009149064168187150, guid: 1769ff53e8cc63243a6b58c1e5ca0da1,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1168,8 +1169,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 2
-  m_fontSizeBase: 2
+  m_fontSize: 1.5
+  m_fontSizeBase: 1.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
